@@ -1,7 +1,7 @@
 require("./string-utilities.js")
 const poster = require("./post-update.js")
 const dirty = require("dirty")
-const db = dirty("kvstore.db")
+const db = dirty(process.env.KVSTORE_PATH || "kvstore.db")
 const debug = false
 var pollIntervalSeconds = process.env.POLL_TIME_IN_SECONDS
 

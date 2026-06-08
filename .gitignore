@@ -3,3 +3,5 @@ kvstore.db
 .DS_Store
 .vendor
 .env
+secrets/
+data/
