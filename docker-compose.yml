@@ -1,0 +1,18 @@
+services:
+  asc-notifier:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      # Persist the dirty kvstore on a named volume so restarts don't re-notify.
+      KVSTORE_PATH: /app/data/kvstore.db
+    volumes:
+      # Mount the App Store Connect API private key (.p8) read-only.
+      - ./secrets/AuthKey.p8:/app/secrets/AuthKey.p8:ro
+      - asc-state:/app/data
+    # Load the .p8 contents into SPACESHIP_CONNECT_API_KEY at startup.
+    # $$ escapes $ so the substitution runs inside the container, not in compose.
+    command: sh -c 'export SPACESHIP_CONNECT_API_KEY="$$(cat /app/secrets/AuthKey.p8)"; npm start'
+
+volumes:
+  asc-state:
